@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vehicle.mapper.BikeStatsMapper">
+    <!-- 查询所有单车数据 -->
+    <select id="selectAll" resultType="com.vehicle.pojo.BikeStats">
+        SELECT bike_id AS bikeId, brand, model, 投放_year AS投放Year, region, 
+               total_mileage AS totalMileage, total_usage_time AS totalUsageTime,
+               last_used_time AS lastUsedTime, status 
+        FROM bike_stats
+    </select>
+
+    <!-- 按投放年份统计单车数量 -->
+    <select id="countByYear" resultType="java.util.Map">
+        SELECT 投放_year AS year, COUNT(bike_id) AS count FROM bike_stats GROUP BY 投放_year ORDER BY投放_year
+    </select>
+
+    <!-- 按品牌统计单车数量 -->
+    <select id="countByBrand" resultType="java.util.Map">
+        SELECT brand, COUNT(bike_id) AS count FROM bike_stats GROUP BY brand ORDER BY count DESC
+    </select>
+    
+    <!-- 按区域统计单车数量 -->
+    <select id="countByRegion" resultType="java.util.Map">
+        SELECT region, COUNT(bike_id) AS count FROM bike_stats GROUP BY region ORDER BY count DESC
+    </select>
+    
+    <!-- 按状态统计单车数量 -->
+    <select id="countByStatus" resultType="java.util.Map">
+        SELECT status, COUNT(bike_id) AS count FROM bike_stats GROUP BY status ORDER BY count DESC
+    </select>
+    
+    <!-- 按区域统计平均骑行里程 -->
+    <select id="avgMileageByRegion" resultType="java.util.Map">
+        SELECT region, AVG(total_mileage) AS avgMileage FROM bike_stats GROUP BY region ORDER BY avgMileage DESC
+    </select>
+    
+    <!-- 按品牌统计平均使用时长 -->
+    <select id="avgUsageTimeByBrand" resultType="java.util.Map">
+        SELECT brand, AVG(total_usage_time) AS avgUsageTime FROM bike_stats GROUP BY brand ORDER BY avgUsageTime DESC
+    </select>
+</mapper>
